@@ -53,4 +53,16 @@ def create_masks(segmentator, image_path, mask_path):
 
 # Main code simplified
 segmentator = cellsegmentator.CellSegmentator(NUC_MODEL, CELL_MODEL, device="cuda", padding=True, multi_channel_model=True)
-create_masks(segmentator, image_path, mask_path)
+
+if os.path.exists("path_list.csv"):
+    path_list = open("path_list.csv", 'r')
+    for curr_path in path_list:
+        if curr_path.strip() != "" and not curr_path.startswith("#"):
+            input_path = "./input/" + curr_path.strip().split(",")[0]
+            output_path = "./output/" + curr_path.strip().split(",")[1]
+            if output_path != "":
+                os.makedirs(output_path, exist_ok=True)
+
+            create_masks(segmentator, input_path, output_path)
+else:
+    create_masks(segmentator, image_path, mask_path)
