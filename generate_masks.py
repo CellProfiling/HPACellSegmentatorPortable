@@ -12,7 +12,10 @@ def create_masks(segmentator, image_stack, output_folder, output_prefix):
     cell_segmentation = segmentator.pred_cells(image_stack)
 
     # post-processing nuclei and cell mask
+    cell_mask = None
     for i, (nuc_segmentation, cell_segmentation) in enumerate(zip(nuc_segmentation, cell_segmentation)):
         nuclei_mask, cell_mask = label_cell(nuc_segmentation, cell_segmentation)
         cv2.imwrite(os.path.join(output_folder, output_prefix + "nucleimask.png"), nuclei_mask)
         cv2.imwrite(os.path.join(output_folder, output_prefix + "cellmask.png"), cell_mask)
+
+    return cell_mask
