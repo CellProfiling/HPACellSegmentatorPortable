@@ -83,11 +83,12 @@ def generate_crops(image_stack, cell_mask, crop_size, mask_cell, output_folder, 
             cell_crop, _ = safe_crop(image_cp, fixed_bbox)
             cv2.imwrite(f"{output_folder}/{output_prefix}cell{region.label}_crop_" + colors[curr_img_index] + ".png", cell_crop)
 
-            this_cell_mask = cell_mask == region.label
-            this_cell_mask = grey_dilation(this_cell_mask, size=7)
-            image_cp[this_cell_mask == 0] = 0
-            cell_mask_crop, _ = safe_crop(image_cp, fixed_bbox)
-            cv2.imwrite(f"{output_folder}/{output_prefix}cell{region.label}_crop_masked_" + colors[curr_img_index] + ".png", cell_mask_crop)
+            if mask_cell:
+                this_cell_mask = cell_mask == region.label
+                this_cell_mask = grey_dilation(this_cell_mask, size=7)
+                image_cp[this_cell_mask == 0] = 0
+                cell_mask_crop, _ = safe_crop(image_cp, fixed_bbox)
+                cv2.imwrite(f"{output_folder}/{output_prefix}cell{region.label}_crop_masked_" + colors[curr_img_index] + ".png", cell_mask_crop)
 
         new_center = (crop_size // 2, crop_size // 2)
         new_bbox = (
