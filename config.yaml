@@ -1,3 +1,4 @@
 #crop_cells: False
 #crop_size: 1024
+#crop_bitdepth: 8
 #mask_cell: False

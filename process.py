@@ -28,8 +28,9 @@ logger = logging.getLogger("HPACellSegmentatorPortable")
 config = {"log": logger}
 
 # If you want to use constants with your script, add them here
-config["crop_cells"] = False
+config["crop_cells"] = True
 config["crop_size"] = 1024
+config["crop_bitdepth"] = 8
 config["mask_cell"] = False
 
 # If you want to use command line parameters with your script, add them here
@@ -49,6 +50,13 @@ if len(sys.argv) > 1:
         "--crop_size",
         help="the cell crop size",
         default=1024,
+        type=int,
+    )
+    argparser.add_argument(
+        "-cb",
+        "--crop_bitdepth",
+        help="the cell crop bitdepth",
+        default=8,
         type=int,
     )
     argparser.add_argument(
@@ -106,7 +114,7 @@ try:
                 if config["crop_cells"]:
                     os.makedirs(curr_set_arr[5].strip(), exist_ok=True)
                     image_stack.append([imread(curr_set_arr[3].strip(), as_gray=True)])
-                    cell_bbox_df = generate_cell_crops.generate_crops(image_stack, cell_mask, config["crop_size"], config["mask_cell"], curr_set_arr[5].strip(), curr_set_arr[6].strip())
+                    cell_bbox_df = generate_cell_crops.generate_crops(image_stack, cell_mask, config["crop_size"], config["crop_bitdepth"], config["mask_cell"], curr_set_arr[5].strip(), curr_set_arr[6].strip())
                     df = pd.concat([df, cell_bbox_df], ignore_index=True)
 
                 config["log"].info("- Saved results for " + curr_set_arr[6].strip())
