@@ -87,10 +87,6 @@ def generate_crops(image_stack, cell_mask, crop_size, crop_bitdepth, mask_cell, 
         )
 
         for curr_img_index in range(len(image_stack)):
-
-            imsave(f"{output_folder}/{output_prefix}cell{region.label}_crop_TEST" + colors[curr_img_index] + ".png",
-                   convert_bitdepth(region.image, crop_bitdepth))
-
             if curr_img_index != 0:
                 image_cp = image_stack[curr_img_index][0].copy()
 
