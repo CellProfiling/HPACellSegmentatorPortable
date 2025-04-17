@@ -12,11 +12,20 @@ colors = ["red", "yellow", "blue", "green"]
 
 def convert_bitdepth(image, bitdepth):
     if bitdepth == 8:
-        return np.uint8(image)
+        if image.dtype != np.uint8:
+            return (image / np.iinfo(image.dtype).max * 255).astype(np.uint8)
+        else:
+            return np.uint8(image)
     elif bitdepth == 16:
-        return np.uint16(image)
+        if image.dtype != np.uint16:
+            return (image / np.iinfo(image.dtype).max * 65535).astype(np.uint16)
+        else:
+            return np.uint16(image)
     elif bitdepth == 32:
-        return np.uint32(image)
+        if image.dtype != np.uint32:
+            return (image / np.iinfo(image.dtype).max * 4294967295).astype(np.uint32)
+        else:
+            return np.uint32(image)
     return image
 
 
