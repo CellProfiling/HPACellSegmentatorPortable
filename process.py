@@ -6,6 +6,7 @@ import sys
 import yaml
 import pandas as pd
 
+import cv2
 import generate_masks
 import generate_cell_crops
 import hpacellseg.cellsegmentator as cellsegmentator
@@ -28,7 +29,7 @@ logger = logging.getLogger("HPACellSegmentatorPortable")
 config = {"log": logger}
 
 # If you want to use constants with your script, add them here
-config["crop_cells"] = True
+config["crop_cells"] = False
 config["crop_size"] = 1024
 config["crop_bitdepth"] = 8
 config["mask_cell"] = False
@@ -104,9 +105,9 @@ try:
                 os.makedirs(curr_set_arr[4].strip(), exist_ok=True)
                 # We load the images as numpy arrays
                 image_stack = []
-                image_stack.append([imread(curr_set_arr[0].strip(), as_gray=True)])
-                image_stack.append([imread(curr_set_arr[1].strip(), as_gray=True)])
-                image_stack.append([imread(curr_set_arr[2].strip(), as_gray=True)])
+                image_stack.append([cv2.imread(curr_set_arr[0].strip(), -1)])
+                image_stack.append([cv2.imread(curr_set_arr[1].strip(), -1)])
+                image_stack.append([cv2.imread(curr_set_arr[2].strip(), -1)])
 
                 # We run the model
                 cell_mask = generate_masks.create_masks(segmentator, image_stack, curr_set_arr[4].strip(), curr_set_arr[6].strip())
