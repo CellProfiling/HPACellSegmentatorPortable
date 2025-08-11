@@ -6,11 +6,10 @@ import sys
 import yaml
 import pandas as pd
 
-import cv2
 import generate_masks
 import generate_cell_crops
+import image_utils
 import hpacellseg.cellsegmentator as cellsegmentator
-from skimage.io import imread
 
 
 # This is the log configuration. It will log everything to a file AND the console
@@ -113,16 +112,16 @@ try:
                 os.makedirs(curr_set_arr[4].strip(), exist_ok=True)
                 # We load the images as numpy arrays
                 image_stack = []
-                image_stack.append([cv2.imread(curr_set_arr[0].strip(), cv2.IMREAD_GRAYSCALE)])
-                image_stack.append([cv2.imread(curr_set_arr[1].strip(), cv2.IMREAD_GRAYSCALE)])
-                image_stack.append([cv2.imread(curr_set_arr[2].strip(), cv2.IMREAD_GRAYSCALE)])
+                image_stack.append([image_utils.read_grayscale_image(curr_set_arr[0].strip())])
+                image_stack.append([image_utils.read_grayscale_image(curr_set_arr[1].strip())])
+                image_stack.append([image_utils.read_grayscale_image(curr_set_arr[2].strip())])
 
                 # We run the model
                 cell_mask = generate_masks.create_masks(segmentator, image_stack, curr_set_arr[4].strip(), curr_set_arr[6].strip())
                 # Single cell crops
                 if config["crop_cells"]:
                     os.makedirs(curr_set_arr[5].strip(), exist_ok=True)
-                    image_stack.append([cv2.imread(curr_set_arr[3].strip(), cv2.IMREAD_GRAYSCALE)])
+                    image_stack.append([image_utils.read_grayscale_image(curr_set_arr[3].strip())])
                     cell_bbox_df = generate_cell_crops.generate_crops(image_stack, cell_mask, config["crop_size"], config["crop_bitdepth"], config["crop_mask"], config["mask_cell"], curr_set_arr[5].strip(), curr_set_arr[6].strip())
                     df = pd.concat([df, cell_bbox_df], ignore_index=True)
 
