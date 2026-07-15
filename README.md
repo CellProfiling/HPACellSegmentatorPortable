@@ -93,4 +93,6 @@ HPACellSegmentatorPortable model creates the following items in the chosen segme
 If the generating crops option has been selected, HPACellSegmentatorPortable will also generate in the chosen crop_folder the following files:
 - `[output_prefix]_cell[X]_crop_[red|yellow|blue|green].png`: a cropped cell from the FOV.
 - `[output_prefix]_cell[X]_crop_masked_[red|yellow|blue|green].png`: a cropped and masked cell from the FOV (if the mask_cell option was selected).
+- `[output_prefix]_cell[X]_mask.png`: the binary cell mask for that crop (if the crop_mask option was selected).
+- `[output_prefix]_cell[X]_nucleimask.png`: the binary nuclei mask for that crop (if the crop_mask option was selected).
 - Additionally, a `crop_info.csv` file will be created containing all generated cell crops bboxes for convenience.
