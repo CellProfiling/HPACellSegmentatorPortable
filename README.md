@@ -75,12 +75,18 @@ Once you have prepared your `path_list.csv` you are ready to run the `process.py
   - Simply call `python process.py`.
 
 - Call `process.py` script with arguments:
-  - You can get a list of available parameters (and their default values) using `-help` or `-?` argument.
-  - Example call: `python process.py -c True -cs 684`.
+  - You can get a list of available parameters using the `-h` or `--help` argument.
+  - Boolean options are toggled with a flag: use `-c`/`--crop_cells` to enable or `--no-crop_cells` to disable (likewise `-cm`/`--crop_mask` and `-mc`/`--mask_cell`).
+  - Value options take a number: `-cs`/`--crop_size` and `-cb`/`--crop_bitdepth`.
+  - Example call: `python process.py --crop_cells --crop_size 684`.
 
 - Edit the `config.yaml` file:
   - Just change the contents of the file with your desired values.
   - Simply call `python process.py`.
+
+These approaches can be combined; when a parameter is set in more than one place, command line arguments take precedence over `config.yaml`, which in turn takes precedence over the constants in `process.py`.
+
+**NOTE**: `config.yaml` must always be present (it can be left empty). If the file is missing, `process.py` will fail to start.
 
 
 Output
