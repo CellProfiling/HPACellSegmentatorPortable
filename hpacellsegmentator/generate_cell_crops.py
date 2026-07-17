@@ -4,7 +4,7 @@ import numpy as np
 from skimage.measure import regionprops
 from scipy.ndimage import grey_dilation
 import pandas as pd
-import image_utils
+from hpacellsegmentator import image_utils
 
 
 warnings.simplefilter(action="ignore", category=FutureWarning)

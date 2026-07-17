@@ -1,7 +1,5 @@
-import click
-from hpacellseg import __version__
-from hpacellseg.cellsegmentator import CellSegmentator
-from hpacellseg.utils import label_nuclei, label_cell
+from hpacellsegmentator.hpacellseg.cellsegmentator import CellSegmentator
+from hpacellsegmentator.hpacellseg.utils import label_nuclei, label_cell
 
 
 def main(images=None):

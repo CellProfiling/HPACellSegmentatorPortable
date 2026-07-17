@@ -7,7 +7,17 @@ Just a repackage of the "HPA Cell Segmentator" repository with updated libraries
 Installation
 ------------
 
-If you use any Python IDE (VSCode, PyCharm, Spyder, etc...), just:
+**As a package (recommended).** From the repository root:
+
+- `pip install .` to install it, or `pip install -e .` for an editable/development install.
+
+This installs three importable top-level packages (`hpacellsegmentator`, `hpacellseg`, `pytorch_zoo`) and three commands:
+
+- `hpacellsegmentator`: segment a single set of images (see *Running the code*).
+- `hpacellsegmentator-batch`: process many image sets via `path_list.csv`.
+- `hpacellsegmentator-service`: run the HTTP segmentation service.
+
+**Manual/IDE setup.** If you use any Python IDE (VSCode, PyCharm, Spyder, etc...), just:
 - Either import the project into your IDE through git/github OR Create a new project and download all the repository code from github into it.
 - Create a virtual environment for that project.
 - Install the project requirements through your IDE. Make sure the packages versions match, as IDEs try to be too smart some times.
@@ -67,13 +77,16 @@ images/CACO-2_2047_C3_6_red.png,images/CACO-2_2047_C3_6_yellow.png,images/CACO-2
 images/U-215MG792_H7_2_red.png,images/U-215MG792_H7_2_yellow.png,images/U-215MG792_H7_2_blue.png,,output,,U-215MG792_H7_2_
 ```
 
-Once you have prepared your `path_list.csv` you are ready to run the `process.py` script. You can choose between 3 different running approaches, depending on your personal preferences:
+Once you have prepared your `path_list.csv` you are ready to run the batch script (`hpacellsegmentator/batch.py`, formerly `process.py`). It reads `path_list.csv` and `config.yaml` from the current working directory, so run it from the directory that holds them. You can choose between 3 different running approaches, depending on your personal preferences:
 
-- Edit directly the constants located in the `process.py` script:
+- Edit directly the constants located in the `hpacellsegmentator/batch.py` script:
   - Probably the least versatile, but useful if you are always running HPACellSegmentatorPortable with the same settings.
   - Just change the values under for the following section of code: `# If you want to use constants with your script, add them here` .
-  - Simply call `python process.py`.
+  - Simply call `hpacellsegmentator-batch`.
 
+- Call the batch script with arguments:
+  - You can get a list of available parameters (and their default values) using `-help` or `-?` argument.
+  - Example call: `hpacellsegmentator-batch -c True -cs 684`.
 - Call `process.py` script with arguments:
   - You can get a list of available parameters using the `-h` or `--help` argument.
   - Boolean options are toggled with a flag: use `-c`/`--crop_cells` to enable or `--no-crop_cells` to disable (likewise `-cm`/`--crop_mask` and `-mc`/`--mask_cell`).
@@ -82,7 +95,9 @@ Once you have prepared your `path_list.csv` you are ready to run the `process.py
 
 - Edit the `config.yaml` file:
   - Just change the contents of the file with your desired values.
-  - Simply call `python process.py`.
+  - Simply call `hpacellsegmentator-batch`.
+
+If you have not installed the package, `python -m hpacellsegmentator.batch` works the same way from the repository root.
 
 These approaches can be combined; when a parameter is set in more than one place, command line arguments take precedence over `config.yaml`, which in turn takes precedence over the constants in `process.py`.
 
