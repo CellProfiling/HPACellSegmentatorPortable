@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hpacellsegmentatorportable"
+dynamic = ["version"]
+description = "A repackage of HPA Cell Segmentator with updated libraries and simplified usage."
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+dependencies = [
+    "imageio==2.34.0",
+    "numpy==1.26.4",
+    "opencv-python==4.9.0.80",
+    "scikit-image==0.22.0",
+    "torch==2.2.0",
+    "torchvision==0.17.0",
+    "PyYAML==6.0.1",
+    "pandas==2.2.3",
+    "imagecodecs==2024.12.30",
+]
+
+[project.scripts]
+hpacellsegmentator-batch = "hpacellsegmentator.process:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "hpacellsegmentator.__version__"}
+
+# pytorch_zoo must stay a top-level package: the .pth model files are pickled
+# whole objects that record their classes as `pytorch_zoo.*`, so torch.load
+# (weights_only=False) resolves those import paths at load time.
+[tool.setuptools.packages.find]
+include = ["hpacellsegmentator*", "pytorch_zoo*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+hpacellseg = ["VERSION"]

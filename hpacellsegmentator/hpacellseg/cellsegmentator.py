@@ -10,9 +10,9 @@ import torch.nn
 import torch.nn.functional as F
 from skimage import transform, util
 
-from hpacellseg.constants import (MULTI_CHANNEL_CELL_MODEL_URL,
-                                  NUCLEI_MODEL_URL, TWO_CHANNEL_CELL_MODEL_URL)
-from hpacellseg.utils import download_with_url
+from hpacellsegmentator.hpacellseg.constants import (MULTI_CHANNEL_CELL_MODEL_URL,
+                                                     NUCLEI_MODEL_URL, TWO_CHANNEL_CELL_MODEL_URL)
+from hpacellsegmentator.hpacellseg.utils import download_with_url
 
 NORMALIZE = {"mean": [124 / 255, 117 / 255, 104 / 255], "std": [1 / (0.0167 * 255)] * 3}
 
