@@ -1,7 +1,7 @@
 import os
 import warnings
 import cv2
-from hpacellseg.utils import label_cell
+from hpacellsegmentator.hpacellseg.utils import label_cell
 
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
