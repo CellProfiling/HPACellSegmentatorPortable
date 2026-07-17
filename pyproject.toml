@@ -40,4 +40,4 @@ include = ["hpacellsegmentator*", "pytorch_zoo*"]
 namespaces = false
 
 [tool.setuptools.package-data]
-hpacellseg = ["VERSION"]
+hpacellsegmentator = ["VERSION", "hpacellseg/VERSION"]
