@@ -1,5 +1,5 @@
-import cv2
 import numpy as np
+import tiffile
 
 
 def convert_bitdepth(image, bitdepth):
@@ -31,7 +31,7 @@ def convert_bitdepth(image, bitdepth):
 
 
 def read_grayscale_image(input_image, force_channel = -1, force_bit_depth = 0, minmax_norm = False):
-    np_img = cv2.imread(input_image, cv2.IMREAD_UNCHANGED)
+    np_img = tiffile.imread(input_image, is_ome=False)
     if np_img is None:
         raise FileNotFoundError(f"Could not read image: {input_image}")
     if force_channel != -1:
