@@ -77,7 +77,7 @@ images/CACO-2_2047_C3_6_red.png,images/CACO-2_2047_C3_6_yellow.png,images/CACO-2
 images/U-215MG792_H7_2_red.png,images/U-215MG792_H7_2_yellow.png,images/U-215MG792_H7_2_blue.png,,output,,U-215MG792_H7_2_
 ```
 
-Once you have prepared your `path_list.csv` you are ready to run the batch script (`<venv-dir>/bin/hpacellsegmentator-batch`, formerly `process.py`). It reads `path_list.csv` and `config.yaml` from the current working directory, so run it from the directory that holds them. You can choose between 3 different running approaches, depending on your personal preferences:
+Once you have prepared your `path_list.csv` you are ready to run the batch script (`<venv-dir>/bin/hpacellsegmentator-batch`, formerly `process.py`). The path is specified as `-f path_list.csv`. `config.yaml` from the current working directory or can be specified with the --config option. You can choose between 3 different running approaches, depending on your personal preferences:
 
 - Edit directly the constants located in the `hpacellsegmentator/process.py` script:
   - Probably the least versatile, but useful if you are always running HPACellSegmentatorPortable with the same settings.
@@ -95,13 +95,11 @@ Once you have prepared your `path_list.csv` you are ready to run the batch scrip
 
 - Edit the `config.yaml` file:
   - Just change the contents of the file with your desired values.
-  - Simply call `hpacellsegmentator-batch`.
+  - Simply call `hpacellsegmentator-batch` or `hpacellsegmentator-batch --config config.yaml`.
 
 If you have not installed the package, `python -m hpacellsegmentator.process` works the same way from the repository root.
 
 These approaches can be combined; when a parameter is set in more than one place, command line arguments take precedence over `config.yaml`, which in turn takes precedence over the constants in `process.py`.
-
-**NOTE**: `config.yaml` must always be present (it can be left empty). If the file is missing, `process.py` will fail to start.
 
 
 Output

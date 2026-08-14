@@ -25,30 +25,30 @@ def main():
     # This is the general configuration variable. We are going to use the special key "log" in the dictionary to use the log in our code
     config = {"log": logger}
 
-    # If you want to use constants with your script, add them here
-    config["crop_cells"] = True
-    config["crop_size"] = 1024
-    config["crop_bitdepth"] = 8
-    config["crop_mask"] = True
-    config["mask_cell"] = True
-
-    # If you want to use a configuration file with your script, add it here
-    with open("config.yaml", "r") as file:
-        config_contents = yaml.safe_load(file)
-        if config_contents:
-            config = config | config_contents
-
     # If you want to use command line parameters with your script, add them here.
     # Do NOT set defaults here: the defaults live in the constants/config.yaml layers above.
     # We only merge the arguments the user actually passed (value is not None), so the
     # priority ends up being constants < config.yaml < command line arguments.
     argparser = argparse.ArgumentParser(description="Please input the following parameters")
-    argparser.add_argument("-c", "--crop_cells", help="if you want to generate the crops of the cells detected in the segmentation", action=argparse.BooleanOptionalAction)
-    argparser.add_argument("-cs", "--crop_size", help="the cell crop size", type=int)
-    argparser.add_argument("-cb", "--crop_bitdepth", help="the cell crop bitdepth", type=int)
-    argparser.add_argument("-cm", "--crop_mask", help="if you want to also generate the crop binary mask from the segmentation", action=argparse.BooleanOptionalAction)
-    argparser.add_argument("-mc", "--mask_cell", help="if you want additional crops with only the segmented cell area", action=argparse.BooleanOptionalAction)
+    argparser.add_argument("-c", "--crop_cells", help="if you want to generate the crops of the cells detected in the segmentation", action=argparse.BooleanOptionalAction, default=True)
+    argparser.add_argument("-cs", "--crop_size", help="the cell crop size", type=int, default=1024)
+    argparser.add_argument("-cb", "--crop_bitdepth", help="the cell crop bitdepth", type=int, default=8)
+    argparser.add_argument("-cm", "--crop_mask", help="if you want to also generate the crop binary mask from the segmentation", action=argparse.BooleanOptionalAction, default=True)
+    argparser.add_argument("-mc", "--mask_cell", help="if you want additional crops with only the segmented cell area", action=argparse.BooleanOptionalAction, default=True)
+    argparser.add_argument("--config", help="path to config file", default=None)
+    argparser.add_argument("-m", "--model_dir", help="path to model directory", default="./models")
+    argparser.add_argument("-f", "--file", help="path to path list of images", required=True)
     args = argparser.parse_args()
+
+    # If you want to use a configuration file with your script, add it here
+    if args.config is not None:
+        if os.path.exists(args.config):
+            with open(args.config, "r") as file:
+                config_contents = yaml.safe_load(file)
+                if config_contents:
+                    config = config | config_contents
+        else:
+            raise FileNotFoundError(f"Config file {args.config} not found")
     config = config | {key: value for key, value in vars(args).items() if value is not None}
 
     # Log the start time and the final configuration so you can keep track of what you did
@@ -61,8 +61,8 @@ def main():
     # is nothing we can process without the model.
     try:
         segmentator = cellsegmentator.CellSegmentator(
-            "./models/dpn_unet_nuclei_v1.pth",
-            "./models/dpn_unet_cell_3ch_v1.pth",
+            args.model_dir + "/dpn_unet_nuclei_v1.pth",
+            args.model_dir +"/dpn_unet_cell_3ch_v1.pth",
             device="cuda", padding=True, multi_channel_model=True)
     except Exception as e:
         config["log"].error("- Could not load the segmentation model: " + str(e))
@@ -74,8 +74,8 @@ def main():
 
     # We iterate over each set of images to process. Each set is processed inside its own
     # try/except so a single failing FOV is logged and skipped instead of aborting the batch.
-    if os.path.exists("./path_list.csv"):
-        with open("./path_list.csv", "r") as path_list:
+    if os.path.exists(args.file):
+        with open(args.file, "r") as path_list:
             for curr_set in path_list:
 
                 if curr_set.strip() != "" and not curr_set.startswith("#"):
