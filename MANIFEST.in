@@ -1,0 +1,15 @@
+include README.md
+include requirements.txt
+include config.yaml
+include hpacellseg/VERSION
+
+exclude path_list.csv
+exclude log.txt
+exclude crop_info.csv
+
+recursive-exclude models *
+recursive-exclude test *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.pth
+recursive-exclude * *.tif
