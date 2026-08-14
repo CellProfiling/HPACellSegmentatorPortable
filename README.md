@@ -77,9 +77,9 @@ images/CACO-2_2047_C3_6_red.png,images/CACO-2_2047_C3_6_yellow.png,images/CACO-2
 images/U-215MG792_H7_2_red.png,images/U-215MG792_H7_2_yellow.png,images/U-215MG792_H7_2_blue.png,,output,,U-215MG792_H7_2_
 ```
 
-Once you have prepared your `path_list.csv` you are ready to run the batch script (`hpacellsegmentator/batch.py`, formerly `process.py`). It reads `path_list.csv` and `config.yaml` from the current working directory, so run it from the directory that holds them. You can choose between 3 different running approaches, depending on your personal preferences:
+Once you have prepared your `path_list.csv` you are ready to run the batch script (`<venv-dir>/bin/hpacellsegmentator-batch`, formerly `process.py`). It reads `path_list.csv` and `config.yaml` from the current working directory, so run it from the directory that holds them. You can choose between 3 different running approaches, depending on your personal preferences:
 
-- Edit directly the constants located in the `hpacellsegmentator/batch.py` script:
+- Edit directly the constants located in the `hpacellsegmentator/process.py` script:
   - Probably the least versatile, but useful if you are always running HPACellSegmentatorPortable with the same settings.
   - Just change the values under for the following section of code: `# If you want to use constants with your script, add them here` .
   - Simply call `hpacellsegmentator-batch`.
@@ -87,7 +87,7 @@ Once you have prepared your `path_list.csv` you are ready to run the batch scrip
 - Call the batch script with arguments:
   - You can get a list of available parameters (and their default values) using `-help` or `-?` argument.
   - Example call: `hpacellsegmentator-batch -c True -cs 684`.
-- Call `process.py` script with arguments:
+- Call `hpacellsegmentator-batch` script with arguments:
   - You can get a list of available parameters using the `-h` or `--help` argument.
   - Boolean options are toggled with a flag: use `-c`/`--crop_cells` to enable or `--no-crop_cells` to disable (likewise `-cm`/`--crop_mask` and `-mc`/`--mask_cell`).
   - Value options take a number: `-cs`/`--crop_size` and `-cb`/`--crop_bitdepth`.
@@ -97,7 +97,7 @@ Once you have prepared your `path_list.csv` you are ready to run the batch scrip
   - Just change the contents of the file with your desired values.
   - Simply call `hpacellsegmentator-batch`.
 
-If you have not installed the package, `python -m hpacellsegmentator.batch` works the same way from the repository root.
+If you have not installed the package, `python -m hpacellsegmentator.process` works the same way from the repository root.
 
 These approaches can be combined; when a parameter is set in more than one place, command line arguments take precedence over `config.yaml`, which in turn takes precedence over the constants in `process.py`.
 
